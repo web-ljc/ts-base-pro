@@ -6,7 +6,10 @@ module.exports = {
   entry: './src/index.ts',
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'js/bundle.[contenthash:10].js',
+    environment: {
+      arrowFunction: false
+    }
   },
   module: {
     rules: [
@@ -14,27 +17,21 @@ module.exports = {
         test: /\.ts$/,
         use: [
           {
-            // 指定加载器
-            loader: 'babel-loader',
-            // 设置babel
-            options: {
-              // 设置预定义环境
-              presets: [
+            loader: 'babel-loader', // 指定加载器
+            options: { // 设置babel
+              presets: [ // 设置预定义环境
                 [
-                  // 指定环境的插件
-                  '@babel/preset-env',
+                  '@babel/preset-env', // 指定环境的插件
                   {
-                    // 要兼容的目标浏览器
-                    targets: {
+                    targets: { // 要兼容的目标浏览器
                       "chrome": "60"
                     },
-                    // 要兼容的corejs的版本
-                    "corejs": "3",
-                    // 使用corejs的方式“usage”表示按需加载
-                    "useBuiltIns": "usage"
+                    "corejs": "3", // 要兼容的corejs的版本
+                    "useBuiltIns": "usage" // 使用corejs的方式“usage”表示按需加载
                   }
                 ]
-              ]
+              ],
+              cacheDirectory: true
             }
           },
           'ts-loader'
