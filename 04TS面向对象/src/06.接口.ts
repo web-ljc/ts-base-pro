@@ -1,5 +1,8 @@
-
-// 描述一个对象的类型
+/* 
+  接口 Interfaces
+    - 描述一个对象的类型
+    - 首字母大写
+*/
 type myType = {
   name: string,
   age: number
