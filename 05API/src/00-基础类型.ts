@@ -25,8 +25,8 @@ I'll be ${ age + 1 } years old next month.`;
 let notSure: any = 4;
 notSure = "maybe a string instead";
 notSure = false; // okay, definitely a boolean
-notSure.ifItExists(); // okay, ifItExists might exist at runtime
-notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+// notSure.ifItExists(); // okay, ifItExists might exist at runtime
+// notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
 
 let prettySure: Object = 4;
 // prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
@@ -83,10 +83,10 @@ function infiniteLoop(): never {
 
 
 // Object非原始类型
-declare function create(o: object | null): void;
-create({ prop: 0 }); // OK
-create(null); // OK
-create([])
+// declare function create(o: object | null): void;
+// create({ prop: 0 }); // OK
+// create(null); // OK
+// create([])
 // create(42); // Error
 // create("string"); // Error
 // create(false); // Error
@@ -145,3 +145,4 @@ interface Args {
 function testFn3() {
   let args: Args = arguments
 }
+
