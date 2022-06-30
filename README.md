@@ -374,7 +374,136 @@
         }
       ```
 
+#### 7.1 泛型
+  - 用来创建可重用的组件，一个组件可以支持多种类型的数据，在进行类型注解时，使用类型变量，不写死固定值
+  - T 泛型变量 ｜ 类型变量
+    ```js
+      // T泛型变量，在使用时确认
+      function test<T>(a: T): T {
+        return a
+      }
+      test(1)
+      test<string>('123')
+
+      interface MyArray<T>{
+        [n: number]: T
+      }
+      let a: number[] = [1, 3]
+      let b: Array<number> = [5, 6]
+    ```
+  
+  - 泛型类型
+    ```js
+      function identity2<T>(arg: Array<T>): Array<T> {
+        return arg
+      }
+      // 1. 函数泛型的注解方式
+      let a2: <T>(arg: Array<T>) => Array<T> = identity2
+      
+      // 2. 对象字面量的方式来定义泛型
+      let b: { <T>(arg: T): T } = identity
+      
+      // 3. 泛型接口定义方式
+      interface IFn {
+        <T>(arg: T): T
+      }
+      let c: IFn = identity
+    ```
+
+  - 泛型类 | 泛型约束
+    - 泛型类
+      ```js
+        // 泛型类
+        class MinClass<T> {
+          public list: T[] = []
+          add(num: T) {
+            this.list.push(num)
+          }
+          min(): T {
+            let minNum = this.list[0]
+            for(let i = 0; i < this.list.length; i++) {
+              if(minNum > this.list[i]) minNum = this.list[i]
+            }
+            return minNum
+          }
+        }
+        let test = new MinClass<number>()
+      ```
+    
+    - 泛型约束
+      - 泛型约束 extends 接口的方式（不一定是接口）
+      ```js
+        interface LenthWise {
+          length: number
+        }
+        // 继承接口
+        function fn5<T extends LenthWise>(arg: T): T {
+          console.log(arg.length);
+          return arg
+        }
 
 
+        // 在泛型约束中使用类型参数 keyof操作符获取对象所有key
+        function getProperty<T, K extends keyof T>(obj: T, key: K) {
+          return obj[key];
+        }
+        let x2 = { a: 1, b: 2, c: 3, d: 4 };
+        getProperty(x2, "a"); // okay
+        getProperty(x2, "m"); // error: Argument of type 'm' isn't assignable to 'a' | 'b' | 'c' | 'd'.
+      ```
+
+    - 多重泛型约束 & 交叉类型
+      - 将多个类型合并为一个类型, 包含了所需的所有类型的特征
+      ```js
+        interface IOne {
+          content: string
+          title: string
+        }
+        interface ITwo {
+          url: string
+        }
+        class Test <T extends IOne & ITwo> {
+          props: T
+          constructor(public arg: T) {
+            this.props = arg
+          }
+          info() {
+            return {
+              url: this.props.url,
+              title: this.props.title
+            }
+          }
+        }
+      ```
+
+    - 泛型中的类类型
+      在约束或推论有更好的方式
+        ```js
+        function create<T>(c: {new(): T; }): T {
+          return new c();
+        }
+
+        class BeeKeeper {
+          hasMask: boolean;
+        }
+        class ZooKeeper {
+          nametag: string;
+        }
+        class Animal {
+          numLegs: number;
+        }
+        class Bee extends Animal {
+          keeper: BeeKeeper;
+        }
+        class Lion extends Animal {
+          keeper: ZooKeeper;
+        }
+        function createInstance<A extends Animal>(c: new () => A): A {
+          return new c();
+        }
+        createInstance(Lion).keeper.nametag;  // typechecks!
+        createInstance(Bee).keeper.hasMask;   // typechecks!
+        ```
+  
 
 
