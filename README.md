@@ -226,6 +226,155 @@
     - 类当作接口使用
 
 
+#### 6.1 接口
+  - 函数类型
+    ```js
+      interface SearchFunc {
+        (source: string): boolean
+      }
+      let mySearch: SearchFunc
+      mySerach = function(source: string) {
+        return !source
+      }
+    ```
+  - 可索引的类型
+    - 共支持2种索引签名：字符串和数字
+      ```js
+      interface NumberArray {
+        [index: number]: number
+      }
+      ```
+    - 当使用number来索引时，JS会将它转成string然后再去索引对象
+    - 索引签名，有点像老大的意思，所有属性要遵从索引
+      ```js
+        interface NumberDictionary {
+          [index: string]: number | string
+          length:  number
+          name: string
+        }
+      ``` 
+    - 索引签名可以设置为只读
+      ```js
+        interface ReadonlyStringArray {
+          readonly [index: number]: string
+        }
+        let myArr:ReadonlyStringArray = ['1', '2']
+        myArr[1] = '3' // error
+      ```
+  - 类类型接口
+    - 对类的一部分行为的抽象
+    - 类实现多有接口中的属性和方法 对比 抽象类：抽象方法需要实现
+
+      ```js
+        // interface类的接口  implements
+        interface Alarm {
+          alert(): void
+        }
+        interface Light {
+          color: string
+        }
+        class Door {}
+        // extends 继承Door implements 实现Alarm
+        class Car extends Door implements Alarm, Light{
+          alert() {}
+          color = 'red'
+        }
+      ```
+    
+    - 类静态部分和实例部分的区别
+      - constructor存在于类的静态部分，所以不在检查的范围内
+      - 静态部分和实例部分需要单独检查
+        ```js
+          // 静态部分
+          interface ClockConstructor {
+              new (hour: number, minute: number): ClockInterface;
+              getName(): void
+          }
+          // 实例部分
+          interface ClockInterface {
+              tick();
+          }
+          function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+              return new ctor(hour, minute);
+          }
+          class DigitalClock implements ClockInterface {
+              constructor(h: number, m: number) { }
+              static getName() {}
+              tick() {
+                  console.log("beep beep");
+              }
+          }
+          let digital = createClock(DigitalClock, 12, 17);
+        ```
+    
+    - 继承接口
+      ```js
+        interface Shape{
+          color: string
+        }
+        interface Square extends Shape {
+          sideLength: number
+        }
+      ```
+    
+    - 接口的混合类型
+      - 函数类型的interface，添加属性的方式来实现，对象的interface
+      ```js
+        interface Counter {
+            (start: number): string;
+            interval: number;
+            reset(): void;
+        }
+
+        function getCounter(): Counter {
+            let counter = <Counter>function (start: number) { };
+            counter.interval = 123;
+            counter.reset = function () { };
+            return counter;
+        }
+
+        let c = getCounter();
+        c(10);
+        c.reset();
+        c.interval = 5.0;
+      ```
+    
+    - 接口继承类
+      1. 类可以实现接口
+      2. 接口可以继承接口
+      3. 接口可以继承类（不太建议使用）
+      ```js
+        // 类
+        class Point {
+          x: number
+          y: number
+          constructor(x: number, y: number) {
+            this.x = x
+            this.y = y
+          }
+        }
+        // 接口
+        interface PointInterface {
+          x: number
+          y: number
+        }
+        // 继承类
+        interface Point3D extends Point {
+          z: number
+        }
+        // 继承接口
+        // interface Point3D extends PointInterface {
+        //   z: number
+        // }
+
+        let point3D: Point3D = {
+          x: 123,
+          y: 123,
+          z: 1
+        }
+      ```
+
+
 
 
 
