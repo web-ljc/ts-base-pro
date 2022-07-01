@@ -521,3 +521,32 @@
       let list2: [string, ...number[]] = ['a', 1, 2]
     ```
 
+#### 8.1 枚举
+  - 定义一些带名字的常量, 类似于对象，不能修改和添加
+    ```js
+      enum Direction {
+        Up = 1,
+        Down,
+        Left,
+        Right
+      }
+    ```
+  - 数字枚举，值是数字，可以累加（可以有初始值）
+  - 计算过的常量枚举成员，最好都放在后边
+  - 字符串枚举，每个成员必须都是字符串
+    ```js
+      enum Direction {
+          Up = "UP",
+          Down = "DOWN",
+          Left = "LEFT",
+          Right = "RIGHT",
+      }
+    ```
+
+  - 异构枚举
+    ```js
+      enum BooleanLikeHeterogeneousEnum {
+          No = 0,
+          Yes = "YES",
+      }
+    ```
