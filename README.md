@@ -504,6 +504,20 @@
         createInstance(Lion).keeper.nametag;  // typechecks!
         createInstance(Bee).keeper.hasMask;   // typechecks!
         ```
-  
 
+#### 8.1 元组
+  1. 确定成员类型、长度
+  2. push越界时，类型为联合类型
+  3. 可选的元素类型
+    ```js
+      let list: [number, string?, boolean?]
+    ```
+  4. 拓展运算符
+    ```js
+      declare function test2(...args: [number, string]): void;
+      declare function test2(arg1: number, arg2: string): void
+
+      let list1: [number, ...string[]] = [1, '2', '3']
+      let list2: [string, ...number[]] = ['a', 1, 2]
+    ```
 

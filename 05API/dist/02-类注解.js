@@ -97,7 +97,20 @@ class Employee {
     }
 }
 let employee = new Employee();
-employee.fullName = "44445555";
+employee.fullName = "44445555"; // set
 if (employee.fullName) {
-    alert(employee.fullName);
+    console.log(employee.fullName); // get
 }
+// 抽象类
+class Animal3 {
+    move() {
+        console.log('roaming the earch...');
+    }
+}
+class Snake3 extends Animal3 {
+    makeSound() { } // 继承类一定要实现抽象类的方法，类似于接口
+    move() {
+        console.log('234234');
+    }
+}
+// new Animal3 // Error抽象类不能创建实例
